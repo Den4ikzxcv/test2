@@ -26,7 +26,7 @@ jobs:
     - name: Rebase origin from dev
       run: |
         git fetch origin
-        git rebase origin/dev
+        git merge origin/dev
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v4
       with:
