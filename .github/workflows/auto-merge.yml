@@ -1,0 +1,32 @@
+# This is a basic workflow that is manually triggered
+
+name: Auto merge
+
+# Controls when the action will run. Workflow runs when manually triggered using the UI
+# or API.
+on:
+  workflow_dispatch:
+    # Inputs the workflow accepts.
+    inputs:
+      pull-request:
+        # Friendly description to be shown in the UI instead of 'name'
+        description: 'PR number'
+        required: true
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  
+  mergeReleasePr:
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    - id: automerge
+      name: automerge
+      uses: "pascalgn/automerge-action@v0.15.5"
+      env:
+        GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        MERGE_LABELS: "release"
+        MERGE_METHOD: "squash"
+        MERGE_REQUIRED_APPROVALS: "0"
+        PULL_REQUEST: "${{ github.event.inputs.pull-request }}"
