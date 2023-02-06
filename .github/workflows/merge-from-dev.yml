@@ -1,0 +1,39 @@
+# This is a basic workflow that is manually triggered
+
+name: Create release from dev
+
+# Controls when the action will run. Workflow runs when manually triggered using the UI
+# or API.
+on:
+  workflow_dispatch:
+    inputs:
+      release-name:
+        description: 'Release name'
+        default: 'Latest release'
+        required: true
+      branch-name:
+        description: 'Release branch name'
+        required: true
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  mergeDevToMaster:
+    runs-on: ubuntu-latest    
+    steps:
+    - uses: actions/checkout@v3
+    - name: Send greeting
+      run: echo "Hello ${{ github.event.inputs.release-name }}"
+    - name: Rebase origin from dev
+      run: |
+        git fetch origin main
+        git merge main
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v4
+      with:
+        commit-message: Merging dev to master
+        title: Release ${{ github.event.inputs.release-name }}
+        body: Merging dev branch to master
+        branch: release-${{ github.event.inputs.branch-name }}
+        base: dev
+        labels: release
+      
