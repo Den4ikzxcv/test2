@@ -34,6 +34,6 @@ jobs:
         title: Release ${{ github.event.inputs.release-name }}
         body: Merging dev branch to master
         branch: release-${{ github.event.inputs.branch-name }}
-        base: master
+        base: main
         labels: release
       
