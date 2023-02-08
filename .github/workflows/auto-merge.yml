@@ -31,5 +31,7 @@ jobs:
         MERGE_REQUIRED_APPROVALS: "0"
        # PULL_REQUEST: "${{ github.event.inputs.pull-request }}"
     - name: merge-check
-      if: steps.automerge.outputs.mergeResult != "merged"
-      run: exit 1
+      if: steps.automerge.outputs.mergeResult != 'merged'
+      run: |
+        echo "Pull request ${{ steps.automerge.outputs.pullRequestNumber }} failed with status ${{ steps.automerge.outputs.mergeResult }}"
+        exit 1
