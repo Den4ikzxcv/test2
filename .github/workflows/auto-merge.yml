@@ -29,4 +29,7 @@ jobs:
         MERGE_LABELS: "release, automerge"
         MERGE_METHOD: "squash"
         MERGE_REQUIRED_APPROVALS: "0"
-        PULL_REQUEST: "${{ github.event.inputs.pull-request }}"
+       # PULL_REQUEST: "${{ github.event.inputs.pull-request }}"
+    - name: merge-check
+      if: steps.automerge.outputs.mergeResult != "merged"
+      run: exit 1
